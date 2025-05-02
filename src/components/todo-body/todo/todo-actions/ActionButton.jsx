@@ -6,11 +6,13 @@ const ActionButton = ({ onclick, mainColor, children }) => {
       className="button-icon"
       aria-label="true"
       sx={{
-        border: `3px solid ${mainColor}`,
+        borderStyle: "solid",
+        borderColor: mainColor,
+        borderWidth: { xs: "2px", md: "3px" },
         color: mainColor,
         backgroundColor: "#E5C955",
         borderRadius: "9999px",
-        padding: "5px",
+        padding: { xs: "3px", md: "5px" },
         "&:hover": {
           backgroundColor: "#E5C955",
         },

@@ -6,16 +6,18 @@ const CompleteTaskButton = ({ todo, onClickHandler, mainColor, children }) => {
       className="button-icon"
       aria-label="true"
       sx={{
-        border: `3px solid ${mainColor}`,
+        borderWidth: { xs: "2px", md: "3px" },
+        borderStyle: "solid",
+        borderColor: mainColor,
         color: todo.isComplete ? "#E5C955" : mainColor,
         backgroundColor: todo.isComplete ? mainColor : "#E5C955",
         borderRadius: "9999px",
-        padding: "5px",
+        padding: { xs: "3px", md: "5px" },
         "&:hover": {
           backgroundColor: todo.isComplete ? mainColor : "#E5C955",
         },
       }}
-      onClick={() => onClickHandler(todo.id)}
+      onClick={onClickHandler}
     >
       {children}
     </IconButton>

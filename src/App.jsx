@@ -2,6 +2,7 @@ import TodoList from "./components/TodoList";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TodosContext from "./context/TodosContext";
+import Box from "@mui/material/Box";
 
 const theme = createTheme({
   typography: {
@@ -18,14 +19,22 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <TodosContext>
-        <div
-          className="min-h-screen flex justify-center items-center bg-gradient-to-b from-slate-300 to-neutral-100"
-          style={{ direction: "rtl", fontFamily: "Alex" }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            fontFamily: "Alex",
+            direction: "rtl",
+            background:
+              "radial-gradient(circle,rgba(34, 193, 195, 0.69) 0%, rgba(253, 187, 45, 0.64) 100%)",
+          }}
         >
-          <Container maxWidth="sm" cka>
+          <Container maxWidth="sm">
             <TodoList />
           </Container>
-        </div>
+        </Box>
       </TodosContext>
     </ThemeProvider>
   );

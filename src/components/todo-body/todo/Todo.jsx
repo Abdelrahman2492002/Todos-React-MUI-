@@ -1,0 +1,121 @@
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+
+//icons import
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+//=========
+import { useContext, useState } from "react";
+import { TodoContext } from "../../../context/TodosContext";
+
+import CompleteTaskButton from "./todo-actions/CompleteTaskButton";
+import ActionButton from "./todo-actions/ActionButton";
+import DeleteDialog from "./todo-actions/DeleteDialog";
+import UpdateDialog from "./todo-actions/UpdateDialog";
+import TodoInfo from "./todo-info/TodoInfo";
+
+const Todo = ({ todo }) => {
+  const { todos, setTodos } = useContext(TodoContext);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const openUpdateDialoge = () => {
+    setShowUpdateDialog(true);
+  };
+
+  const openDeleteDialoge = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const makeTodoCompleted = () => {
+    const updatedTodos = todos.map((item) => {
+      if (item.id === todo.id) {
+        return {
+          ...item,
+          isComplete: !item.isComplete,
+        };
+      }
+      return item;
+    });
+    setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  };
+
+  return (
+    <div>
+      <UpdateDialog
+        todo={todo}
+        showUpdate={showUpdateDialog}
+        setShowUpdateDialog={setShowUpdateDialog}
+      />
+
+      <DeleteDialog
+        id={todo.id}
+        showDelete={showDeleteDialog}
+        setShowDeleteDialog={setShowDeleteDialog}
+      />
+
+      <Box
+        className="todo-box"
+        sx={{
+          p: { xs: 1, md: 2 },
+          backgroundColor: "#E5C955",
+          marginTop: "10px",
+          borderRadius: "4px",
+          maxWidth: "100%",
+        }}
+      >
+        <Grid container spacing={{ xs: 1, md: 2 }}>
+          <Grid item size={8}>
+            <TodoInfo todo={todo} />
+          </Grid>
+          <Grid
+            item
+            size={4}
+            sx={{
+              display: "flex",
+              justifyContent: {
+                xs: "flex-end",
+                md: "space-around",
+              },
+              gap: { xs: "5px", md: "8px" },
+              alignItems: "center",
+            }}
+          >
+            <CompleteTaskButton
+              todo={todo}
+              onClickHandler={makeTodoCompleted}
+              mainColor="#328E6E"
+            >
+              <CheckIcon sx={{ fontSize: { xs: "18px", md: "24px" } }} />
+            </CompleteTaskButton>
+
+            <ActionButton
+              todo={todo}
+              onClickHandler={makeTodoCompleted}
+              mainColor="#090030"
+              onclick={openUpdateDialoge}
+            >
+              <EditIcon sx={{ fontSize: { xs: "18px", md: "24px" } }} />
+            </ActionButton>
+
+            {/* Delete Button */}
+
+            <ActionButton
+              todo={todo}
+              mainColor="#F30A49"
+              onclick={openDeleteDialoge}
+            >
+              <DeleteIcon sx={{ fontSize: { xs: "18px", md: "24px" } }} />
+            </ActionButton>
+            {/*========= Delete Button ========== */}
+          </Grid>
+        </Grid>
+      </Box>
+    </div>
+  );
+};
+
+export default Todo;

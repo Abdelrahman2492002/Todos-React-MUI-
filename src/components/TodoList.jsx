@@ -1,23 +1,22 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Todo from "./Todo";
 import { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "../context/TodosContext";
+import TodoHeader from "./todo-header/TodoHeader";
+import RenderTodos from "./todo-body/RenderTodos";
+import TodoFooter from "./todo-footer/TodoFooter";
+import ToggleTodos from "./todo-body/ToggleTodos";
 
 const TodoList = () => {
   const { todos, setTodos } = useContext(TodoContext);
   const [titleInput, setTitleInput] = useState("");
   const [selectedType, setSelectedType] = useState("all");
 
-  const AddTodo = () => {
+  const handleSelectedTypeChange = (e) => setSelectedType(e.target.value);
+  const handleTitleInputChange = (e) => setTitleInput(e.target.value);
+
+  const handleAddTodo = () => {
     if (titleInput === "") return;
     const newTodo = {
       id: uuidv4(),
@@ -63,57 +62,19 @@ const TodoList = () => {
       style={{ maxHeight: "80vh", overflowY: "auto" }}
     >
       <CardContent>
-        <Typography
-          variant="h1"
-          sx={{ fontFamily: "Alex", fontSize: "40px", fontWeight: 600 }}
-        >
-          <span style={{ color: "#C24242" }}>قائمة</span> المهام
-        </Typography>
-        <Divider />
-        <ToggleButtonGroup
-          exclusive
-          aria-label="text alignment"
-          sx={{ marginTop: 3, direction: "ltr" }}
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-          color="primary"
-        >
-          <ToggleButton value="unCompleted">غير مكتمل</ToggleButton>
-          <ToggleButton value="completed">مكتمل</ToggleButton>
-          <ToggleButton value="all">الكل</ToggleButton>
-        </ToggleButtonGroup>
+        {/*Todo Header */}
+        <TodoHeader />
 
-        {/* todo */}
-        {todosBeRendered.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
-        ))}
-        {/* ======todo====== */}
+        {/*Todo Body */}
+        <ToggleTodos value={selectedType} onchange={handleSelectedTypeChange} />
+        <RenderTodos todosBeRendered={todosBeRendered} />
 
-        {/* Input & Add Button */}
-        <Grid container spacing={2} sx={{ marginTop: "10px" }}>
-          <Grid size={8}>
-            <TextField
-              id="outlined-basic"
-              label="إضافة مهمة"
-              variant="outlined"
-              sx={{ width: "100%" }}
-              color="primary"
-              value={titleInput}
-              onChange={(e) => setTitleInput(e.target.value)}
-            />
-          </Grid>
-          <Grid size={4}>
-            <Button
-              variant="contained"
-              sx={{ width: "100%", height: "100%", backgroundColor: "#C24242" }}
-              onClick={AddTodo}
-              disabled={titleInput.length == 0}
-            >
-              إضافة
-            </Button>
-          </Grid>
-        </Grid>
-        {/* =======Input & Add Button========== */}
+        {/* Todo footer*/}
+        <TodoFooter
+          titleInput={titleInput}
+          handleTitleInputChange={handleTitleInputChange}
+          handleAddTodo={handleAddTodo}
+        />
       </CardContent>
     </Card>
   );
