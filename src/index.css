@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+.button-icon:hover {
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
+.button-icon {
+  transition: all 0.2s !important;
+}
+
+.todo-box:hover {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+.todo-box {
+  transition: all 0.2s !important;
+}
+
+/*==============Font===================*/
+@font-face {
+  font-family: Alex;
+  src: url("../public/fonts/Alexandria-Regular.ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-family: Alex;
+  src: url("../public/fonts/Alexandria-Medium.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("../public/fonts/Alexandria-Light.ttf");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("../public/fonts/Alexandria-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Alex;
+  src: url("../public/fonts/Alexandria-ExtraBold.ttf");
+  font-weight: 900;
+}
+/*==============Font===================*/
