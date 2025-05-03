@@ -7,17 +7,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { TodoContext } from "../../../../context/TodosContext";
 import { useContext } from "react";
 
-const DeleteDialog = ({ showDelete, setShowDeleteDialog, id }) => {
+const DeleteDialog = ({ id, showDelete, closeDeleteDialoge }) => {
   const { todos, setTodos } = useContext(TodoContext);
-
-  const closeDeleteDialoge = () => {
-    setShowDeleteDialog(false);
-  };
 
   const handleDeleteConfirm = (id) => {
     const updatedTodos = todos.filter((t) => t.id !== id);
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    closeDeleteDialoge();
   };
 
   return (
@@ -28,17 +25,33 @@ const DeleteDialog = ({ showDelete, setShowDeleteDialog, id }) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
+      <DialogTitle
+        id="alert-dialog-title"
+        sx={{ fontSize: { xs: "16px", md: "20px" } }}
+      >
         هل أنت متأكد من أنك تريد حذف هذه المهمة
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
+        <DialogContentText
+          id="alert-dialog-description"
+          sx={{ fontSize: { xs: "13px", md: "16px" } }}
+        >
           لايمكنك التراجع عن هذا الحذف إذا ضغطت موافق
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDeleteDialoge}>إغلاق</Button>
-        <Button onClick={() => handleDeleteConfirm(id)}>موافق</Button>
+        <Button
+          sx={{ fontSize: { xs: "12px", md: "16px" } }}
+          onClick={closeDeleteDialoge}
+        >
+          إغلاق
+        </Button>
+        <Button
+          sx={{ fontSize: { xs: "12px", md: "16px" } }}
+          onClick={() => handleDeleteConfirm(id)}
+        >
+          موافق
+        </Button>
       </DialogActions>
     </Dialog>
   );

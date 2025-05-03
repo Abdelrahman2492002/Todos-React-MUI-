@@ -7,7 +7,7 @@ const TodoInfo = ({ todo }) => {
         variant="h5"
         sx={{
           textAlign: "right",
-          fontSize: { xs: "14px", md: "20px" },
+          fontSize: { xs: "14px", md: "18px" },
           textDecoration: todo.isComplete ? "line-through" : null,
         }}
       >
@@ -17,7 +17,7 @@ const TodoInfo = ({ todo }) => {
         variant="body2"
         sx={{
           textAlign: "right",
-          fontSize: { xs: "11px", md: "16px" },
+          fontSize: { xs: "11px", md: "14px" },
           width: "100%",
           overflow: "hidden",
         }}

@@ -5,24 +5,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../../../../context/TodosContext";
 
-const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
+const UpdateDialog = ({ todo, showUpdate, closeUpdateDialoge }) => {
   const { todos, setTodos } = useContext(TodoContext);
 
   const [editInputs, setEditInputs] = useState({
-    title: todo.title,
-    details: todo.details,
+    title: todo?.title,
+    details: todo?.details,
   });
 
-  const closeUpdateDialoge = () => {
-    setShowUpdateDialog(false);
-  };
-
-  const handleUpdateConfirm = (id) => {
+  const handleUpdateConfirm = () => {
     const updatedTodos = todos.map((t) => {
-      if (t.id === id) {
+      if (t.id === todo.id) {
         return {
           ...t,
           title: editInputs.title,
@@ -33,9 +29,18 @@ const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
     });
 
     setTodos(updatedTodos);
-    setShowUpdateDialog(false);
+    closeUpdateDialoge();
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
   };
+
+  useEffect(() => {
+    if (todo) {
+      setEditInputs({
+        title: todo.title || "",
+        details: todo.details || "",
+      });
+    }
+  }, [todo]);
 
   return (
     <Dialog
@@ -48,12 +53,13 @@ const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
           overflow: "hidden",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
+          fontSize: { xs: "16px", md: "20px" },
         }}
       >
         <span style={{ color: "#328E6E", fontWeight: "bold" }}>
           تعديل مهمة{" "}
         </span>
-        {todo.title}
+        {todo?.title}
       </DialogTitle>
       <DialogContent>
         <DialogContentText></DialogContentText>
@@ -65,11 +71,19 @@ const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
           variant="standard"
           slotProps={{
             inputLabel: {
-              style: {
+              sx: {
                 direction: "rtl",
                 textAlign: "right",
                 right: 0,
                 left: "auto",
+                fontWeight: "bold",
+                fontSize: { xs: "15px", md: "16px" },
+                color: "primary.main",
+              },
+            },
+            input: {
+              sx: {
+                fontSize: { xs: "12px", md: "16px" },
               },
             },
           }}
@@ -85,11 +99,18 @@ const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
           variant="standard"
           slotProps={{
             inputLabel: {
-              style: {
+              sx: {
                 direction: "rtl",
                 textAlign: "right",
                 right: 0,
                 left: "auto",
+                fontWeight: "bold",
+                color: "primary.main",
+              },
+            },
+            input: {
+              sx: {
+                fontSize: { xs: "12px", md: "16px" },
               },
             },
           }}
@@ -101,7 +122,7 @@ const UpdateDialog = ({ todo, showUpdate, setShowUpdateDialog }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeUpdateDialoge}>إغلاق</Button>
-        <Button onClick={() => handleUpdateConfirm(todo.id)}>تأكيد</Button>
+        <Button onClick={handleUpdateConfirm}>تأكيد</Button>
       </DialogActions>
     </Dialog>
   );
