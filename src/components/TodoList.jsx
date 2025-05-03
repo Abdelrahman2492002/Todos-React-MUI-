@@ -1,6 +1,6 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "../context/TodosContext";
 import TodoHeader from "./todo-header/TodoHeader";
@@ -30,9 +30,15 @@ const TodoList = () => {
     setTitleInput("");
   };
 
-  const showCompletedTodos = () => todos.filter((t) => t.isComplete);
-
-  const showUnCompletedTodos = () => todos.filter((t) => !t.isComplete);
+  const showCompletedTodos = useMemo(() => {
+    return todos.filter((t) => {
+      console.log("Completed Filter Rendered");
+      return t.isComplete;
+    });
+  }, [todos]);
+  const showUnCompletedTodos = useMemo(() => {
+    return todos.filter((t) => !t.isComplete);
+  }, [todos]);
 
   let todosBeRendered = todos;
 
@@ -41,17 +47,12 @@ const TodoList = () => {
       todosBeRendered = todos;
       break;
     case "completed":
-      todosBeRendered = showCompletedTodos();
+      todosBeRendered = showCompletedTodos;
       break;
     case "unCompleted":
-      todosBeRendered = showUnCompletedTodos();
+      todosBeRendered = showUnCompletedTodos;
       break;
   }
-
-  useEffect(() => {
-    const storageTodos = JSON.parse(localStorage.getItem("todos"));
-    setTodos(storageTodos ? storageTodos : todos);
-  }, [setTodos]);
 
   return (
     <Card

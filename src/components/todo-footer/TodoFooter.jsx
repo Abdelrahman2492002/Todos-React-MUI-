@@ -7,7 +7,6 @@ const TodoFooter = ({ titleInput, handleTitleInputChange, handleAddTodo }) => {
     <Grid container spacing={2} sx={{ marginTop: "10px" }}>
       <Grid size={8}>
         <TextField
-          item
           id="outlined-basic"
           label="إضافة مهمة"
           variant="outlined"
@@ -28,7 +27,6 @@ const TodoFooter = ({ titleInput, handleTitleInputChange, handleAddTodo }) => {
       </Grid>
       <Grid size={4}>
         <Button
-          item
           variant="contained"
           sx={{
             width: "100%",
