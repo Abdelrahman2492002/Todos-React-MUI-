@@ -9,6 +9,7 @@ import ToggleTodos from "./todo-body/ToggleTodos";
 import DeleteDialog from "./todo-body/todo/todo-actions/DeleteDialog";
 import Todo from "./todo-body/todo/Todo";
 import UpdateDialog from "./todo-body/todo/todo-actions/UpdateDialog";
+import { useToast } from "../context/ToastContext";
 
 const TodoList = () => {
   const { todos, setTodos } = useContext(TodoContext);
@@ -17,6 +18,7 @@ const TodoList = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
   const [todoData, setTodoData] = useState(null);
+  const { showHideToast } = useToast();
 
   const openDeleteDialoge = (todo) => {
     setTodoData(todo);
@@ -49,11 +51,11 @@ const TodoList = () => {
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setTitleInput("");
+    showHideToast("تمت أضافة المهمة بنجاح");
   };
 
   const showCompletedTodos = useMemo(() => {
     return todos.filter((t) => {
-      console.log("Completed Filter Rendered");
       return t.isComplete;
     });
   }, [todos]);

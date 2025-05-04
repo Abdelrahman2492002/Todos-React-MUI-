@@ -6,15 +6,18 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TodoContext } from "../../../../context/TodosContext";
 import { useContext } from "react";
+import { useToast } from "../../../../context/ToastContext";
 
 const DeleteDialog = ({ id, showDelete, closeDeleteDialoge }) => {
   const { todos, setTodos } = useContext(TodoContext);
+  const { showHideToast } = useToast();
 
   const handleDeleteConfirm = (id) => {
     const updatedTodos = todos.filter((t) => t.id !== id);
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     closeDeleteDialoge();
+    showHideToast("تم حذف المهمة بنجاح");
   };
 
   return (

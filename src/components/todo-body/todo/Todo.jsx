@@ -12,16 +12,23 @@ import TodoInfo from "./todo-info/TodoInfo";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useToast } from "../../../context/ToastContext";
 
 const Todo = ({ todo, openDelete, openUpdate }) => {
   const { todos, setTodos } = useContext(TodoContext);
+  const { showHideToast } = useToast();
 
   const makeTodoCompleted = () => {
     const updatedTodos = todos.map((item) => {
       if (item.id === todo.id) {
+        const newComplete = !item.isComplete;
+        showHideToast(
+          newComplete ? " تم إكمال المهمة بنجاح  😍" : "حاول إكمال مهمتك 😔",
+          newComplete ? "success" : "info"
+        );
         return {
           ...item,
-          isComplete: !item.isComplete,
+          isComplete: newComplete,
         };
       }
       return item;

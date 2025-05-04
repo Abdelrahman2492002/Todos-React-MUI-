@@ -19,7 +19,7 @@ const TodoInfo = ({ todo }) => {
           textAlign: "right",
           fontSize: { xs: "11px", md: "14px" },
           width: "100%",
-          overflow: "hidden",
+          textDecoration: todo.isComplete ? "line-through" : null,
         }}
       >
         {todo.details}
