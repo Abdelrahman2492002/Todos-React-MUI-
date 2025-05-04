@@ -4,18 +4,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TodoContext } from "../../../../context/TodosContext";
-import { useContext } from "react";
+import { useDispatchTodos } from "../../../../context/TodosContext";
 import { useToast } from "../../../../context/ToastContext";
 
 const DeleteDialog = ({ id, showDelete, closeDeleteDialoge }) => {
-  const { todos, setTodos } = useContext(TodoContext);
+  const dispatch = useDispatchTodos();
   const { showHideToast } = useToast();
 
-  const handleDeleteConfirm = (id) => {
-    const updatedTodos = todos.filter((t) => t.id !== id);
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  const handleDeleteConfirm = () => {
+    dispatch({ type: "deleteTodo", id });
     closeDeleteDialoge();
     showHideToast("تم حذف المهمة بنجاح");
   };
@@ -51,7 +48,7 @@ const DeleteDialog = ({ id, showDelete, closeDeleteDialoge }) => {
         </Button>
         <Button
           sx={{ fontSize: { xs: "12px", md: "16px" } }}
-          onClick={() => handleDeleteConfirm(id)}
+          onClick={handleDeleteConfirm}
         >
           موافق
         </Button>

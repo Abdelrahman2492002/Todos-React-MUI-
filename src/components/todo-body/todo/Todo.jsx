@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { TodoContext } from "../../../context/TodosContext";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
@@ -13,28 +11,19 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useToast } from "../../../context/ToastContext";
+import { useDispatchTodos } from "../../../context/TodosContext";
 
 const Todo = ({ todo, openDelete, openUpdate }) => {
-  const { todos, setTodos } = useContext(TodoContext);
+  const dispatch = useDispatchTodos();
   const { showHideToast } = useToast();
 
   const makeTodoCompleted = () => {
-    const updatedTodos = todos.map((item) => {
-      if (item.id === todo.id) {
-        const newComplete = !item.isComplete;
-        showHideToast(
-          newComplete ? " تم إكمال المهمة بنجاح  😍" : "حاول إكمال مهمتك 😔",
-          newComplete ? "success" : "info"
-        );
-        return {
-          ...item,
-          isComplete: newComplete,
-        };
-      }
-      return item;
-    });
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "makeTodoComplete", id: todo.id });
+    const completed = !todo.isComplete;
+    showHideToast(
+      completed ? " رائع لقد قمت بإكمال المهمة 😍" : " حاول إكمال المهمة 😔",
+      completed ? "success" : "info"
+    );
   };
 
   return (

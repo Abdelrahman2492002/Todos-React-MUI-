@@ -1,8 +1,6 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useContext, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { TodoContext } from "../context/TodosContext";
+import { useMemo, useState } from "react";
 import TodoHeader from "./todo-header/TodoHeader";
 import TodoFooter from "./todo-footer/TodoFooter";
 import ToggleTodos from "./todo-body/ToggleTodos";
@@ -10,9 +8,11 @@ import DeleteDialog from "./todo-body/todo/todo-actions/DeleteDialog";
 import Todo from "./todo-body/todo/Todo";
 import UpdateDialog from "./todo-body/todo/todo-actions/UpdateDialog";
 import { useToast } from "../context/ToastContext";
+import { useDispatchTodos, useStateTodos } from "../context/TodosContext";
 
 const TodoList = () => {
-  const { todos, setTodos } = useContext(TodoContext);
+  const todos = useStateTodos();
+  const dispatch = useDispatchTodos();
   const [titleInput, setTitleInput] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -40,16 +40,7 @@ const TodoList = () => {
   const handleTitleInputChange = (e) => setTitleInput(e.target.value);
 
   const handleAddTodo = () => {
-    if (titleInput === "") return;
-    const newTodo = {
-      id: uuidv4(),
-      title: titleInput,
-      details: "",
-      isComplete: false,
-    };
-    const updatedTodos = [...todos, newTodo];
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "addTodo", title: titleInput });
     setTitleInput("");
     showHideToast("تمت أضافة المهمة بنجاح");
   };

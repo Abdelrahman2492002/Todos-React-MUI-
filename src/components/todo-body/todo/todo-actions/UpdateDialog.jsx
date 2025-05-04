@@ -5,12 +5,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useContext, useEffect, useState } from "react";
-import { TodoContext } from "../../../../context/TodosContext";
+import { useEffect, useState } from "react";
+import { useDispatchTodos } from "../../../../context/TodosContext";
 import { useToast } from "../../../../context/ToastContext";
 
 const UpdateDialog = ({ todo, showUpdate, closeUpdateDialoge }) => {
-  const { todos, setTodos } = useContext(TodoContext);
+  const dispatch = useDispatchTodos();
   const { showHideToast } = useToast();
 
   const [editInputs, setEditInputs] = useState({
@@ -19,20 +19,8 @@ const UpdateDialog = ({ todo, showUpdate, closeUpdateDialoge }) => {
   });
 
   const handleUpdateConfirm = () => {
-    const updatedTodos = todos.map((t) => {
-      if (t.id === todo.id) {
-        return {
-          ...t,
-          title: editInputs.title,
-          details: editInputs.details,
-        };
-      }
-      return t;
-    });
-
-    setTodos(updatedTodos);
+    dispatch({ type: "updateTodo", id: todo.id, editInputs });
     closeUpdateDialoge();
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
     showHideToast("تم تعديل المهمة بنجاح 😊");
   };
 

@@ -1,7 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
+import reducer from "../components/reducers/TodosReducer";
 
-export const TodoContext = createContext(null);
+const TodosStateContext = createContext(null);
+const TodosDispatchContext = createContext(null);
 
 const initialTodos = [
   {
@@ -34,19 +36,22 @@ const initialTodos = [
 ];
 
 const TodosContext = ({ children }) => {
-  const [todos, setTodos] = useState(initialTodos);
-  const [filterdTodos, setFilteredTodos] = useState([]);
-  const value = { todos, setTodos, filterdTodos, setFilteredTodos };
+  const [todos, dispatch] = useReducer(reducer, initialTodos);
 
   useEffect(() => {
-    const storageTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storageTodos) {
-      setTodos(storageTodos);
-    } else {
-      setTodos(initialTodos);
-    }
+    dispatch({ type: "getFromLocalStorage" });
   }, []);
-  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
+
+  return (
+    <TodosStateContext.Provider value={todos}>
+      <TodosDispatchContext.Provider value={dispatch}>
+        {children}
+      </TodosDispatchContext.Provider>
+    </TodosStateContext.Provider>
+  );
 };
+
+export const useStateTodos = () => useContext(TodosStateContext);
+export const useDispatchTodos = () => useContext(TodosDispatchContext);
 
 export default TodosContext;
